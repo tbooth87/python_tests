@@ -1,4 +1,35 @@
+class Player():
+
+    def __init__(self, name):
+        self.name = name
+        self.winCount = 0
+        self.moveHistory = []
+
+    def requestMove(self):
+        newMove = input(self.name + " What is your move?")
+        self.saveMove(newMove)
+
+    # Maintain a history of moves
+    def saveMove(self, newMove):
+        self.moveHistory.append(newMove)
+
+    def incrementWinCount(self):
+        self.winCount += 1
+
+    def getName(self):
+        return self.name
+
+    def getWinCount(self):
+        return self.winCount
+
+    def getLastMove(self):
+        print(str(self.moveHistory[-1]))
+        return self.moveHistory[-1]
+
+
 # Two player game of rock, paper scissors
+player1 = Player("Tyler")
+player2 = Player("Kaitlin")
 
 # Create dictionary to define which move beats what
 # Rock beats scissors
@@ -6,27 +37,22 @@
 # Scissors beats paper
 movesDict = {'rock': 'scissors', 'paper': 'rock', 'scissors': 'paper'}
 
-# Keep some statistics
-p1WinCount = 0
-p2WinCount = 0
-tieCount = 0
-
 playAgain = True
 while playAgain is True:
-    # Get first player's choice
-    p1Choice = input("Player 1 GO (rock/paper/scissors): ")
-    p2Choice = input("Player 2 GO (rock/paper/scissors): ")
+    # Get first player's move
+    player1.requestMove()
+    # Get the second player's move
+    player2.requestMove()
 
     # Determine the winner
-    if movesDict.get(p1Choice) == p2Choice:
+    if movesDict.get(player1.getLastMove()) == player2.getLastMove():
         print("Player one wins!")
-        p1WinCount += 1
-    elif p1Choice == p2Choice:
+        player1.incrementWinCount()
+    elif player1.getLastMove() == player2.getLastMove():
         print("Tie!")
-        tieCount += 1
     else:
         print("Player two wins!")
-        p2WinCount += 1
+        player2.incrementWinCount()
 
     # Ask if they want to play again
     resp = input('Play again? (y/n)')
@@ -35,4 +61,5 @@ while playAgain is True:
         playAgain = False
 
 # Display the game statistics
-print("Player 1 win count:" + str(p1WinCount) + "\nPlayer 2 win count:" + str(p2WinCount) + "\nTie count:" + str(tieCount))
+print("Player 1 win count:" + str(player1.getWinCount()))
+print("Player 2 win count:" + str(player2.getWinCount()))
